@@ -17,6 +17,13 @@ class Settings(BaseSettings):
     # Веб-форма получения токена через логин/пароль (vkpymusic.TokenReceiver)
     vk_auth_ui_enabled: bool = False
 
+    # OAuth VK API (https://oauth.vk.com) — страница /api/auth/vk-oauth
+    vk_oauth_ui_enabled: bool = False
+    vk_oauth_client_id: str = ""
+    vk_oauth_client_secret: str = ""
+    vk_oauth_redirect_uri: str = ""
+    vk_oauth_scope: str = "audio,offline"
+
     # MongoDB
     mongo_url: str
     db_name: str
