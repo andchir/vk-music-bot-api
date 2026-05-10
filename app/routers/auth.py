@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Body
 from app.models.schemas import InitDataRequest, AuthResponse, HistoryItem, StatusResponse
 from app.core.config import settings
 from app.core.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 import hmac
 import hashlib
 import json
@@ -101,7 +101,7 @@ async def login(request: InitDataRequest):
             "photo_url": ""
         }
         # Регистрируем в базе даже через дебаг
-        user_doc = {**user_info, "last_login": datetime.utcnow()}
+        user_doc = {**user_info, "last_login": datetime.now(timezone.utc)}
         await db.music_db.users.update_one({"id": user_id}, {"$set": user_doc}, upsert=True)
         return {"status": "ok", "user": user_info}
 
@@ -120,7 +120,7 @@ async def login(request: InitDataRequest):
         "username": user_info.get("username", ""),
         "language_code": user_info.get("language_code", "en"),
         "photo_url": user_info.get("photo_url", ""),
-        "last_login": datetime.utcnow()
+        "last_login": datetime.now(timezone.utc)
     }
     
     await db.music_db.users.update_one(
@@ -168,7 +168,7 @@ async def add_history(item: HistoryItem):
     ```
     """
     collection = db.music_db.history
-    doc = item.dict()
-    doc['listened_at'] = datetime.utcnow()
+    doc = item.model_dump()
+    doc['listened_at'] = datetime.now(timezone.utc)
     await collection.insert_one(doc)
     return {"status": "saved"}

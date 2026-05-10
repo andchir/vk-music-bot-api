@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 @router.get("/search", response_model=SearchResponse)
-async def search(q: str = Query(..., description="Search query (artist, song title, or both)", example="Макс Корж")):
+async def search(q: str = Query(..., description="Search query (artist, song title, or both)", examples=["Макс Корж"])):
     """
     🔍 **Search for music tracks in VK**
     """
@@ -23,7 +23,7 @@ async def search(q: str = Query(..., description="Search query (artist, song tit
 
 @router.get("/download/{track_id}")
 async def download(
-    track_id: str = Path(..., description="Track ID in format 'ownerId_trackId'", example="371745449_456392423")
+    track_id: str = Path(..., description="Track ID in format 'ownerId_trackId'", examples=["371745449_456392423"])
 ):
     """
     ⬇️ **Get direct musical link (Redirect)**
@@ -45,8 +45,8 @@ async def download(
     
 @router.get("/recommendations", response_model=SearchResponse)
 async def recommendations(
-    track_id: str = Query(None, description="Track ID to base recommendations on", example="371745449_456392423"),
-    query: str = Query(None, description="Search query for recommendations", example="Макс Корж"),
+    track_id: str | None = Query(None, description="Track ID to base recommendations on", examples=["371745449_456392423"]),
+    query: str | None = Query(None, description="Search query for recommendations", examples=["Макс Корж"]),
     limit: int = Query(20, description="Maximum number of recommendations", ge=1, le=50)
 ):
     """
