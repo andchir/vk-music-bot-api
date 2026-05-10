@@ -127,3 +127,33 @@ class StatusResponse(BaseModel):
     )
     
     status: str
+
+
+# --- VK TokenReceiver (логин/пароль) ---
+class VkTokenAuthStart(BaseModel):
+    login: str = Field(..., description="Телефон или email VK")
+    password: str = Field(..., description="Пароль")
+    client: str = Field(
+        default="Kate",
+        description='Клиент VK в vkpymusic (обычно "Kate")',
+    )
+
+
+class VkTokenAuthCaptchaBody(BaseModel):
+    key: str = Field(..., description="Текст с изображения капчи")
+
+
+class VkTokenAuthTwoFactorBody(BaseModel):
+    code: str = Field(..., description="Код из SMS или приложения 2FA")
+
+
+class VkTokenAuthStatusResponse(BaseModel):
+    session_id: str
+    status: str = Field(
+        ...,
+        description="starting | authorizing | need_captcha | need_2fa | success | failed | cancelled",
+    )
+    captcha_img: Optional[str] = None
+    error: Optional[str] = None
+    token: Optional[str] = None
+    user_agent: Optional[str] = None

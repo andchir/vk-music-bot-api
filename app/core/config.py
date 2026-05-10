@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     vk_token: str
     vk_user_agent: str
 
+    # Веб-форма получения токена через логин/пароль (vkpymusic.TokenReceiver)
+    vk_auth_ui_enabled: bool = False
+
     # MongoDB
     mongo_url: str
     db_name: str

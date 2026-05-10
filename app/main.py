@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from app.core.database import connect_to_mongo, close_mongo_connection
-from app.routers import auth, music
+from app.routers import auth, music, vk_token_auth
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
@@ -62,6 +62,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # Подключаем роутеры
 app.include_router(auth.router, prefix="/api") 
 app.include_router(music.router, prefix="/api")
+app.include_router(vk_token_auth.router, prefix="/api")
 
 # Настройка CORS
 app.add_middleware(
